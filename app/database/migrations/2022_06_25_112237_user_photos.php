@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('path');
             $table->string('email');
             $table->string('photo_groups');
+            $table->boolean('sharable');
             $table->timestamps();
         });
     }

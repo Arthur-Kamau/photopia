@@ -18,6 +18,8 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email');
+            $table->string('images');
+            $table->boolean('sharable');
             $table->timestamps();
         });
     }
