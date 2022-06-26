@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     AppShell,
     Navbar, Header,
@@ -12,14 +12,14 @@ import {
     useMantineTheme, Grid,
     Group, ActionIcon, useMantineColorScheme, Box
 } from '@mantine/core';
-import { Sun, MoonStars, CircleCheck, CircleDashed } from 'tabler-icons-react';
+import { Sun, MoonStars, CircleCheck, CircleDashed, Logout } from 'tabler-icons-react';
 import GetStartedIcon from './get_started_icon';
 import { MainLinks } from './main_links';
 import ProfilePage from '../profile/profile';
 import ErrorPage from '../error/error';
 import GalleryPage from '../gallery/gallery';
 import UploadPage from '../upload/upload';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 
 interface HomePageProps {
@@ -32,6 +32,18 @@ const HomePage: React.FC<HomePageProps> = (props) => {
     const [page, setPage] = useState("gallery");
     const [opened, setOpened] = useState(false);
     const { colorScheme, toggleColorScheme } = useMantineColorScheme();
+    const navigate = useNavigate();
+
+
+    useEffect(() => {
+        let tk = window.localStorage.getItem("token");
+        if (tk == undefined || tk.length == 0) {
+            navigate('/login');
+        }
+
+    }, []);
+
+
     return (
         <div>
             <AppShell
@@ -60,9 +72,9 @@ const HomePage: React.FC<HomePageProps> = (props) => {
 
                                 <Grid>
                                     <Grid.Col span={6} >
-                                        <Link to="route" target="_blank" rel="noopener noreferrer" >
+                                        <a href="https://github.com/Arthur-Kamau/photopia/" target="_blank" rel="noopener noreferrer" >
                                             <Text style={{ marginTop: "4px" }}>GitHub(clone/view)</Text>
-                                        </Link>
+                                        </a>
                                     </Grid.Col>
                                     <Grid.Col span={4}></Grid.Col>
                                     <Grid.Col span={2}> <ActionIcon variant="default" onClick={() => {
@@ -80,7 +92,9 @@ const HomePage: React.FC<HomePageProps> = (props) => {
                         </List>
 
                     </Box>
-                    <MainLinks />
+                    <MainLinks click={(label) => {
+                        setPage(label.toLocaleLowerCase())
+                    }} />
 
                 </Navbar>}
                 header={<Header height={60} p="xs">
@@ -96,7 +110,20 @@ const HomePage: React.FC<HomePageProps> = (props) => {
                         </MediaQuery>
 
                         <h2>Photo App</h2>
+
+                        <Group position="right" mt="md">
+                            <div style={{ alignContent: "end", textAlign: "left", alignSelf: "end" }} onClick={(e) => {
+                                window.localStorage.setItem("token", "");
+                                navigate("/login");
+                            }}>
+                                <ThemeIcon color="red" variant="light">
+                                    <Logout />
+                                </ThemeIcon>
+
+                            </div>
+                        </Group>
                     </div>
+
                 </Header>}
                 styles={(theme) => ({
                     main: { backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[8] : theme.colors.gray[0] },

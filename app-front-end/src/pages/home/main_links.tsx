@@ -6,11 +6,13 @@ export interface MainLinkProps {
   icon: React.ReactNode;
   color: string;
   label: string;
+  click: (label: string) => void
 }
 
-export function MainLink({ icon, color, label }: MainLinkProps) {
+export function MainLink({ icon, color, label, click }: MainLinkProps) {
   return (
     <UnstyledButton
+      onClick={(e: any) => { e.preventDefault(); click(label) }}
       sx={(theme) => ({
         display: 'block',
         width: '100%',
@@ -42,7 +44,11 @@ const data = [
   { icon: <Database size={16} />, color: 'grape', label: 'Profile' },
 ];
 
-export function MainLinks() {
-  const links = data.map((link) => <MainLink {...link} key={link.label} />);
+export interface MainLinksProps {
+ 
+  click: (label: string) => void
+}
+export function MainLinks({click}:MainLinksProps) {
+  const links = data.map((link) => <MainLink {...link} key={link.label} click={click}  />);
   return <div>{links}</div>;
 }

@@ -12,5 +12,8 @@ This is  a front end work with laravel api to enable
 
 The project is styled by [mantine.dev](https://mantine.dev/getting-started/)
 
+## Note
+Some items like email verification or forgot password are missing
+
 ## Available Scripts
 * `npm start`

@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
@@ -21,6 +22,8 @@ class PhotosController extends Controller
     public function addPhoto(Request $request)
     {
 
+        echo ("hey herre .........");
+
         $request->validate([
             'file' => 'required|mimes:png,jpeg,csv|max:2048',
         ]);
@@ -29,8 +32,7 @@ class PhotosController extends Controller
 
         $userDir = public_path('uploads') . "/" . $request->user()->id;
         if (!file_exists($userDir)) {
-
-            mkdir('path/to/directory', 0777, true);
+            mkdir($userDir, 0777, true);
         }
 
         $request->file->move($userDir, $fileName);
